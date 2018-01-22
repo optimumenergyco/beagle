@@ -1,0 +1,9 @@
+{
+  "name": "trek",
+  "version": "0.0.1",
+  "description": "A Postgres database migration CLI tool",
+  "main": "index.js",
+  "repository": "https://github.com/optimumenergyco/trek",
+  "author": "Landon Schropp <schroppl@gmail.com>",
+  "license": "MIT"
+}
