@@ -11,5 +11,8 @@ module.exports = {
       impliedStrict: true,
       experimentalObjectRestSpread: true
     }
+  },
+  rules: {
+    "space-before-function-paren": "off"
   }
 };
