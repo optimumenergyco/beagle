@@ -2,8 +2,18 @@
   "name": "trek",
   "version": "0.0.1",
   "description": "A Postgres database migration CLI tool",
-  "main": "index.js",
+  "main": "build/index.js",
   "repository": "https://github.com/optimumenergyco/trek",
   "author": "Landon Schropp <schroppl@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "^7.0.0-beta.38",
+    "@babel/core": "^7.0.0-beta.38",
+    "@babel/node": "^7.0.0-beta.38",
+    "@babel/preset-env": "^7.0.0-beta.38",
+    "@babel/register": "^7.0.0-beta.38"
+  },
+  "scripts": {
+    "compile": "babel --out-dir build lib"
+  }
 }
