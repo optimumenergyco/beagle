@@ -12,6 +12,7 @@
     "@babel/node": "^7.0.0-beta.38",
     "@babel/preset-env": "^7.0.0-beta.38",
     "@babel/register": "^7.0.0-beta.38",
+    "lodash": "^4.17.4",
     "yargs": "^10.1.1"
   },
   "devDependencies": {
@@ -28,6 +29,6 @@
     "compile": "babel --out-dir build lib",
     "lint": "eslint --max-warnings 0 .",
     "test": "cross-env NODE_ENV=test mocha -r @babel/register spec/spec_helper.js 'spec/**/*.js'",
-    "migrate": "babel-node lib/index.js"
+    "trek": "babel-node lib/index.js"
   }
 }
