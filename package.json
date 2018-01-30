@@ -28,7 +28,8 @@
     "eslint-config-optimum-energy": "^0.3.0",
     "mocha": "^5.0.0",
     "sinon": "^4.2.0",
-    "sinon-chai": "^2.14.0"
+    "sinon-chai": "^2.14.0",
+    "source-map-support": "^0.5.3"
   },
   "scripts": {
     "compile": "babel --out-dir build lib",
