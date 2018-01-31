@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { expect } from 'chai';
 
-import ValidationError from '../../lib/utilities/validation-error';
+import ApplicationError from '../../lib/utilities/application-error';
 
 import {
   migrationPath,
@@ -31,32 +31,32 @@ describe("readMigrationFile", () => {
   context("when the migration path does not have a timestamp", () => {
     beforeEach(() => path = "/tmp/hello.sql");
 
-    it("throws a validation error", () => {
-      return expect(readMigrationFile(path)).to.be.rejectedWith(ValidationError);
+    it("throws an application error", () => {
+      return expect(readMigrationFile(path)).to.be.rejectedWith(ApplicationError);
     });
   });
 
   context("when the migration path does not have a name", () => {
     beforeEach(() => path = "/tmp/19881005000000-down.sql");
 
-    it("throws a validation error", () => {
-      return expect(readMigrationFile(path)).to.be.rejectedWith(ValidationError);
+    it("throws aa application error", () => {
+      return expect(readMigrationFile(path)).to.be.rejectedWith(ApplicationError);
     });
   });
 
   context("when the migration path does not have a direction", () => {
     beforeEach(() => path = "/tmp/19881005000000-hello.sql");
 
-    it("throws a validation error", () => {
-      return expect(readMigrationFile(path)).to.be.rejectedWith(ValidationError);
+    it("throws an application error", () => {
+      return expect(readMigrationFile(path)).to.be.rejectedWith(ApplicationError);
     });
   });
 
   context("when the migration path does not have an SQL extension", () => {
     beforeEach(() => path = "/tmp/19881005000000-hello-down");
 
-    it("throws a validation error", () => {
-      return expect(readMigrationFile(path)).to.be.rejectedWith(ValidationError);
+    it("throws an application error", () => {
+      return expect(readMigrationFile(path)).to.be.rejectedWith(ApplicationError);
     });
   });
 
