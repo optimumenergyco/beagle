@@ -106,7 +106,7 @@ describe("readMigrationFiles", () => {
   let migrationsDirectory;
 
   beforeEach(() => {
-    migrationsDirectory = `/tmp/${ new Date().toISOString().replace(/\D/g, '-') }trek`;
+    migrationsDirectory = `/tmp/${ new Date().toISOString().replace(/\D/g, '-') }beagle`;
 
     fs.mkdirSync(migrationsDirectory);
     fs.writeFileSync(`${ migrationsDirectory }/19881005000000-hello-up.sql`, "-- Hello");

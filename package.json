@@ -1,9 +1,9 @@
 {
-  "name": "trek",
+  "name": "beagle",
   "version": "0.0.1",
   "description": "A Postgres database migration CLI tool",
   "main": "build/index.js",
-  "repository": "https://github.com/optimumenergyco/trek",
+  "repository": "https://github.com/optimumenergyco/beagle",
   "author": "Landon Schropp <schroppl@gmail.com>",
   "license": "MIT",
   "dependencies": {
@@ -36,6 +36,6 @@
     "compile": "babel --out-dir build lib",
     "lint": "eslint --max-warnings 0 .",
     "test": "cross-env NODE_ENV=test mocha -r @babel/register spec/spec_helper.js 'spec/**/*.js'",
-    "trek": "babel-node lib/index.js"
+    "beagle": "babel-node lib/index.js"
   }
 }
