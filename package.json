@@ -1,6 +1,6 @@
 {
   "name": "@optimumenergyco/beagle",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The friendly database migration tool",
   "main": "build/index.js",
   "repository": "https://github.com/optimumenergyco/beagle",
