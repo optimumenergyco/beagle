@@ -124,8 +124,7 @@ To deploy Beagle:
 npm version <VERSION>
 git push origin master
 git push --tags origin master
-npm login
-npm publish
+yarn login
 yarn publish --access=public
 ```
 
