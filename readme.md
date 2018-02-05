@@ -112,3 +112,7 @@ Pending Migrations:
 
 N/A
 ```
+
+## License
+
+Beagle is licensed under the [MIT license](/license.md).
