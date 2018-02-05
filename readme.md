@@ -1,6 +1,6 @@
 # Beagle
 
-Beagle is a simple, friendly migration tool.
+Beagle is a simple, lightweight and friendly database migration tool.
 
 ## Why Beagle?
 
@@ -23,29 +23,29 @@ We set out to build Beagle to solve a few problems we felt weren't addressed by 
 
 ## Current Gotchas
 
-Beagle is a new project. As such, there are a few things to watch out for. Eventually, these issues
-will be addressed.
+Beagle is a new project and is still under active development. There are currently a few caveats to
+using it. In the future, these will be addressed.
 
-* Currently, only Postgres is supported.
-* Installation is only available via your favorite JavaScript package manager.
-* Beagle doesn't include commands to create or drop a database. For now, we suggest you use
-  `createdb` or `dropdb`.
-* There's currently no way to run or roll back a specific migration. They must be done in order.
+* The only database currently supported is Postgres.
+* Installation is only available via `yarn` or `npm`.
+* Beagle doesn't include commands to create or drop a database. For now, we suggest you use the
+  Postgres `createdb` and `dropdb` commands.
+* There's currently no way to run a specific migration. Migrations must be run in order.
 
 ## Installation
 
-Beagle can be installed with your favorite JavaScript package manager.
+Install Beagle using your favorite JavaScript package manager.
 
 Yarn:
 
 ``` shell
-yarn add node-beagle
+yarn add @optimumenergyco/beagle
 ```
 
-NPM
+NPM:
 
 ``` shell
-npm install --save node-beagle
+npm install --save @optimumenergyco/beagle
 ```
 
 ## The Commands
@@ -115,12 +115,18 @@ N/A
 
 ## Deployment
 
-To deploy a new version of Beagle:
+Deployments of Beagle must be done *manually*. If we were to include our NPM credentials in
+CodeShip, anyone could submit a pull request calling `console.log(process.env)` and have access.
+
+To deploy Beagle:
 
 ``` shell
 npm version <VERSION>
 git push origin master
 git push --tags origin master
+npm login
+npm publish
+yarn publish --access=public
 ```
 
 ## License
