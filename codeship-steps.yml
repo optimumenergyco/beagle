@@ -1,0 +1,11 @@
+-
+  type: parallel
+  steps:
+    -
+      name: Lint
+      service: beagle
+      command: yarn lint
+    -
+      name: Test
+      service: beagle
+      command: yarn test
