@@ -60,6 +60,26 @@ Beagle ships with a simple CLI.
 * `beagle list`: List the pending and completed migrations.
 * `beagle generate <name>`: Create a new timestamped migration file using the provided name.
 
+### Database Configuration
+
+Beagle supports two ways to configure the database connection.
+
+Any commands that require a database connection can be configured with the following flags:
+
+* `--host`: The database's host.
+* `--port`: The database's port.
+* `--user`: The username used to connect to the database.
+* `--password`: The password used to connect to the database.
+* `--database`: The name of the database.
+
+Optionally, these parameters can be configured using environment variables.
+
+* `BEAGLE_HOST`
+* `BEAGLE_PORT`
+* `BEAGLE_USER`
+* `BEAGLE_PASSWORD`
+* `BEAGLE_DATABASE`
+
 ## Example
 
 Let's say you'd like to create a new table for your potatoes. Start by calling `generate` to create
