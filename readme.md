@@ -21,7 +21,7 @@ We set out to build Beagle to solve a few problems we felt weren't addressed by 
   gets pushed to production and run first, in some systems Karen's migration will never run. Beagle
   keeps track of individual migrations, allowing you to merge at will.
 
-## Curent Gotchas
+## Current Gotchas
 
 Beagle is a new project. As such, there are a few things to watch out for. Eventually, these issues
 will be addressed.
@@ -48,7 +48,7 @@ NPM
 npm install --save node-beagle
 ```
 
-## The commands
+## The Commands
 
 Beagle ships with a simple CLI.
 
