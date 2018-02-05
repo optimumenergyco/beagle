@@ -113,6 +113,16 @@ Pending Migrations:
 N/A
 ```
 
+## Deployment
+
+To deploy a new version of Beagle:
+
+``` shell
+npm version <VERSION>
+git push origin master
+git push --tags origin master
+```
+
 ## License
 
 Beagle is licensed under the [MIT license](/license.md).
