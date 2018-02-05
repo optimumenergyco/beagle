@@ -73,7 +73,7 @@ describe("connect", () => {
 
     it("returns the result of the callback", async () => {
       let result = await connect(databaseOptions, callbackStub);
-      expect(result).to.eq("Hello!")
+      expect(result).to.eq("Hello!");
     });
   });
 });
