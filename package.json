@@ -1,6 +1,6 @@
 {
   "name": "@optimumenergyco/beagle",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "The friendly database migration tool",
   "main": "build/index.js",
   "repository": "https://github.com/optimumenergyco/beagle",
@@ -34,7 +34,7 @@
     "source-map-support": "^0.5.3"
   },
   "scripts": {
-    "compile": "babel --out-dir build lib",
+    "prepublish": "babel --out-dir build lib",
     "lint": "eslint --max-warnings 0 .",
     "test": "cross-env NODE_ENV=test mocha -r @babel/register spec/spec_helper.js 'spec/**/*.js'",
     "beagle": "babel-node lib/index.js"
