@@ -141,11 +141,15 @@ CodeShip, anyone could submit a pull request calling `console.log(process.env)` 
 To deploy Beagle:
 
 ``` shell
-npm version <VERSION>
-git push origin master
-git push --tags origin master
-yarn login
+yarn version <version>
 yarn publish --access=public
+```
+
+To push up the tags to GitHub:
+
+``` shell
+git push --tags origin master
+git push origin master
 ```
 
 ## License
