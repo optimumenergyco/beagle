@@ -57,7 +57,7 @@ Beagle ships with a simple CLI.
 * `beagle up`: Run the next pending migration.
 * `beagle down`: Roll back the last completed migration.
 * `beagle all`: Run all of the pending migrations.
-* `beagle list`: List the pending and completed migrations.
+* `beagle status`: List the pending and completed migrations.
 * `beagle generate <name>`: Create a new timestamped migration file using the provided name.
 
 ### Database Configuration
@@ -108,7 +108,7 @@ CREATE TABLE potatoes (name NOT NULL);
 DROP TABLE potatoes;
 ```
 
-If you run `beagle list`, you'll see your migration under "Pending Migrations":
+If you run `beagle status`, you'll see your migration under "Pending Migrations":
 
 ```
 Completed Migrations:
@@ -120,7 +120,7 @@ Pending Migrations:
 20180819000000-create-potatoes-up.sql
 ```
 
-To run your migration, call `beagle up`. Afterwards, `beagle list` will show your migration under
+To run your migration, call `beagle up`. Afterwards, `beagle status` will show your migration under
 "Completed Migrations":
 
 ```
