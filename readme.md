@@ -99,7 +99,7 @@ You decide your `up` file will create a `potatoes` table and your `down` file wi
 `20180819000000-create-potatoes-up.sql`:
 
 ``` sql
-CREATE TABLE potatoes (name NOT NULL);
+CREATE TABLE potatoes (name TEXT NOT NULL);
 ```
 
 `20180819000000-create-potatoes-down.sql`:
