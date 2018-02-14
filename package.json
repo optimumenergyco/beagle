@@ -1,13 +1,15 @@
 {
   "name": "@optimumenergyco/beagle",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "The friendly database migration tool",
   "main": "build/index.js",
   "repository": "https://github.com/optimumenergyco/beagle",
   "author": "Landon Schropp <schroppl@gmail.com>",
   "license": "MIT",
   "private": false,
-  "engines": { "node": ">= 6" },
+  "engines": {
+    "node": ">= 6"
+  },
   "files": [
     "build"
   ],
