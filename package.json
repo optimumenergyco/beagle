@@ -7,6 +7,7 @@
   "author": "Landon Schropp <schroppl@gmail.com>",
   "license": "MIT",
   "private": false,
+  "engines": { "node": ">= 6" },
   "files": [
     "build"
   ],
