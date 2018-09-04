@@ -25,7 +25,7 @@ describe("logger", () => {
 
     it("writes the message to stdout", stubStdout(() => {
       logger.info('Hello!');
-      expect(process.stdout.write).to.have.been.calledWith('Hello!\n');
+      expect(process.stdout.write).to.have.been.calledWith('》Hello!\n');
     }));
   });
 
@@ -33,7 +33,7 @@ describe("logger", () => {
 
     it("writes the message to stdout", stubStdout(() => {
       logger.success('Hello!');
-      expect(process.stdout.write).to.have.been.calledWith(`${ chalk.green('Hello!') }\n`);
+      expect(process.stdout.write).to.have.been.calledWith(`${ chalk.greenBright('✔️ Hello!') }\n`);
     }));
   });
 
@@ -41,7 +41,7 @@ describe("logger", () => {
 
     it("writes the message to stdout", stubStdout(() => {
       logger.error('Hello!');
-      expect(process.stdout.write).to.have.been.calledWith(`${ chalk.red('Hello!') }\n`);
+      expect(process.stdout.write).to.have.been.calledWith(`${ chalk.redBright('❗ Hello!') }\n`);
     }));
   });
 
@@ -49,7 +49,7 @@ describe("logger", () => {
 
     it("writes the message to stdout", stubStdout(() => {
       logger.notice('Hello!');
-      expect(process.stdout.write).to.have.been.calledWith(`${ chalk.blue('Hello!') }\n`);
+      expect(process.stdout.write).to.have.been.calledWith(`${ chalk.blueBright('➡️ Hello!') }\n`);
     }));
   });
 });
