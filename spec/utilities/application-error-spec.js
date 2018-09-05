@@ -1,5 +1,3 @@
-import { expect } from 'chai';
-
 import ApplicationError from '../../lib/utilities/application-error';
 
 describe("ApplicationError", () => {
@@ -8,10 +6,10 @@ describe("ApplicationError", () => {
   beforeEach(() => error = new ApplicationError());
 
   it("is an error", () => {
-    expect(error).to.be.instanceOf(ApplicationError);
+    expect(error).toBeInstanceOf(ApplicationError);
   });
 
   it("has a stack trace", () => {
-    expect(error.stack).to.not.be.undefined;
+    expect(error.stack).not.toBeUndefined;
   });
 });
