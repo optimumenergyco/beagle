@@ -1,20 +1,22 @@
 import chalk from 'chalk';
-import sinon from 'sinon';
-import { expect } from 'chai';
 
 import logger from '../../lib/utilities/logger';
 
-// To avoid interfering with Mocha's foramtter, stubbing `process.stdout.write` much be done within
+// To avoid interfering with Mocha's formatter, stubbing `process.stdout.write` much be done within
 // each test's `it` function, not in `beforeEach` and `afterEach` functions.
 function stubStdout(callback) {
+
+  let stdoutWrite;
+
   return () => {
-    sinon.stub(process.stdout, 'write');
+    stdoutWrite = process.stdout.write;
+    process.stdout.write = jest.fn();
 
     try {
       callback();
     }
     finally {
-      process.stdout.write.restore();
+      process.stdout.write = stdoutWrite;
     }
   };
 }
@@ -25,7 +27,7 @@ describe("logger", () => {
 
     it("writes the message to stdout", stubStdout(() => {
       logger.info('Hello!');
-      expect(process.stdout.write).to.have.been.calledWith('》Hello!\n');
+      expect(process.stdout.write).toHaveBeenCalledWith('👋 Hello!\n');
     }));
   });
 
@@ -33,7 +35,7 @@ describe("logger", () => {
 
     it("writes the message to stdout", stubStdout(() => {
       logger.success('Hello!');
-      expect(process.stdout.write).to.have.been.calledWith(`${ chalk.greenBright('✔️ Hello!') }\n`);
+      expect(process.stdout.write).toHaveBeenCalledWith(`${ chalk.greenBright('👍 Hello!') }\n`);
     }));
   });
 
@@ -41,7 +43,7 @@ describe("logger", () => {
 
     it("writes the message to stdout", stubStdout(() => {
       logger.error('Hello!');
-      expect(process.stdout.write).to.have.been.calledWith(`${ chalk.redBright('❗ Hello!') }\n`);
+      expect(process.stdout.write).toHaveBeenCalledWith(`${ chalk.redBright('✋ Hello!') }\n`);
     }));
   });
 
@@ -49,7 +51,7 @@ describe("logger", () => {
 
     it("writes the message to stdout", stubStdout(() => {
       logger.notice('Hello!');
-      expect(process.stdout.write).to.have.been.calledWith(`${ chalk.blueBright('➡️ Hello!') }\n`);
+      expect(process.stdout.write).toHaveBeenCalledWith(`${ chalk.blueBright('👉 Hello!') }\n`);
     }));
   });
 });
