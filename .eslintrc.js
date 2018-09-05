@@ -1,7 +1,6 @@
 module.exports = {
   extends: "optimum-energy",
   env: {
-    mocha: true,
     node: true,
     jest: true
   },
