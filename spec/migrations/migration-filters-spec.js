@@ -1,5 +1,3 @@
-import { expect } from 'chai';
-
 import {
   pendingMigrations,
   completedMigrations,
@@ -25,82 +23,82 @@ beforeEach(() => {
 
 describe("pendingMigrations", () => {
 
-  context("when all of the migrations are pending", () => {
+  describe("when all of the migrations are pending", () => {
 
     it("returns the pending migrations sorted by timestamp", () => {
-      expect(pendingMigrations(migrations, [])).to.eql([ migrations[1], migrations[0] ]);
+      expect(pendingMigrations(migrations, [])).toEqual([migrations[1], migrations[0]]);
     });
   });
 
-  context("when some of the migrations are pending", () => {
+  describe("when some of the migrations are pending", () => {
 
     it("returns the pending migrations sorted by timestamp", () => {
-      expect(pendingMigrations(migrations, [ timestamps[0] ])).to.eql([ migrations[1] ]);
+      expect(pendingMigrations(migrations, [timestamps[0]])).toEqual([migrations[1]]);
     });
   });
 
-  context("when none of the migrations are pending", () => {
+  describe("when none of the migrations are pending", () => {
 
     it("returns an empty array", () => {
-      expect(pendingMigrations(migrations, timestamps)).to.eql([]);
+      expect(pendingMigrations(migrations, timestamps)).toEqual([]);
     });
   });
 });
 
 describe("completedMigrations", () => {
 
-  context("when none of the migrations have been completed", () => {
+  describe("when none of the migrations have been completed", () => {
 
     it("returns an empty array", () => {
-      expect(completedMigrations(migrations, [])).to.eql([]);
+      expect(completedMigrations(migrations, [])).toEqual([]);
     });
   });
 
-  context("when some of the migrations have been completed", () => {
+  describe("when some of the migrations have been completed", () => {
 
     it("returns the completed migrations sorted by timestamp", () => {
-      expect(completedMigrations(migrations, [ timestamps[0] ])).to.eql([ migrations[2] ]);
+      expect(completedMigrations(migrations, [timestamps[0]])).toEqual([migrations[2]]);
     });
   });
 
-  context("when all of the migrations have been completd", () => {
+  describe("when all of the migrations have been completd", () => {
 
     it("returns the completed migrations sorted by timestamp", () => {
-      expect(completedMigrations(migrations, timestamps)).to.eql([ migrations[3], migrations[2] ]);
+      expect(completedMigrations(migrations, timestamps)).toEqual([migrations[3], migrations[2]]);
     });
   });
 });
 
 describe("nextPendingMigration", () => {
 
-  context("when there are no pending migrations", () => {
+  describe("when there are no pending migrations", () => {
 
     it("returns an empty array", () => {
-      expect(nextPendingMigration(migrations, timestamps)).to.be.undefined;
+      expect(nextPendingMigration(migrations, timestamps)).toBeUndefined;
     });
   });
 
-  context("when there are pending migrations", () => {
+  describe("when there are pending migrations", () => {
 
     it("returns the pending migration when the earliest timestamp", () => {
-      expect(nextPendingMigration(migrations, [])).to.eq(migrations[1]);
+      expect(nextPendingMigration(migrations, [])).toEqual(migrations[1]);
     });
   });
 });
 
 describe("lastCompletedMigration", () => {
 
-  context("when there are no completed migrations", () => {
+  describe("when there are no completed migrations", () => {
 
     it("returns an empty array", () => {
-      expect(lastCompletedMigration(migrations, [])).to.be.undefined;
+      expect(lastCompletedMigration(migrations, [])).toBeUndefined;
     });
   });
 
-  context("when there are pending migrations", () => {
+  describe("when there are pending migrations", () => {
 
     it("returns the completed migration when the latest timestamp", () => {
-      expect(lastCompletedMigration(migrations, timestamps)).to.eq(migrations[2]);
+      expect(lastCompletedMigration(migrations, timestamps)).toEqual(migrations[2]);
     });
   });
 });
