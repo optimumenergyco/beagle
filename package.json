@@ -34,6 +34,7 @@
     "eslint": "^4.16.0",
     "eslint-config-optimum-energy": "^0.3.0",
     "jest": "^23.5.0",
+    "jest-extended": "^0.8.1",
     "source-map-support": "^0.5.3"
   },
   "scripts": {

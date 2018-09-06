@@ -1,3 +1,6 @@
+// Add more matchers via Jest extended
+require('jest-extended');
+
 expect.extend({
 
   toHaveBeenCalledWithMatch(received, ...parameters) {
