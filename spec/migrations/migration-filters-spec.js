@@ -26,14 +26,14 @@ describe("pendingMigrations", () => {
   describe("when all of the migrations are pending", () => {
 
     it("returns the pending migrations sorted by timestamp", () => {
-      expect(pendingMigrations(migrations, [])).toEqual([migrations[1], migrations[0]]);
+      expect(pendingMigrations(migrations, [])).toEqual([ migrations[1], migrations[0] ]);
     });
   });
 
   describe("when some of the migrations are pending", () => {
 
     it("returns the pending migrations sorted by timestamp", () => {
-      expect(pendingMigrations(migrations, [timestamps[0]])).toEqual([migrations[1]]);
+      expect(pendingMigrations(migrations, [ timestamps[0] ])).toEqual([ migrations[1] ]);
     });
   });
 
@@ -57,14 +57,14 @@ describe("completedMigrations", () => {
   describe("when some of the migrations have been completed", () => {
 
     it("returns the completed migrations sorted by timestamp", () => {
-      expect(completedMigrations(migrations, [timestamps[0]])).toEqual([migrations[2]]);
+      expect(completedMigrations(migrations, [ timestamps[0] ])).toEqual([ migrations[2] ]);
     });
   });
 
   describe("when all of the migrations have been completd", () => {
 
     it("returns the completed migrations sorted by timestamp", () => {
-      expect(completedMigrations(migrations, timestamps)).toEqual([migrations[3], migrations[2]]);
+      expect(completedMigrations(migrations, timestamps)).toEqual([ migrations[3], migrations[2] ]);
     });
   });
 });
