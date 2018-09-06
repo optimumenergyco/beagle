@@ -1,49 +1,57 @@
-import { expect } from 'chai';
-import sinon from 'sinon';
-import proxyquire from 'proxyquire';
+import * as connection from '../../lib/database/database-connect';
+import * as queries from '../../lib/database/database-queries';
+import DatabaseClient from '../../lib/database/database-client';
+import * as logger from '../../lib/utilities/logger';
+
+const migration = Object.freeze({ sql: "--", timestamp: "19881005000000" });
+
+const dummyClient = {
+  query: logger.info
+};
+
+// Query spies
+// isSetUp
+const isSetUpSpy = jest.spyOn(queries, "isSetUp");
+isSetUpSpy.mockImplementation(async () => Promise.resolve(true));
+// setup
+const setUpSpy = jest.spyOn(queries, "setUp");
+setUpSpy.mockImplementation(async () => Promise.resolve());
+// completedTimestamps
+const completedTimestampsSpy = jest.spyOn(queries, "completedTimestamps");
+completedTimestampsSpy.mockImplementation(async () => Promise.resolve([ migration.timestamp ]));
+// migrateUp
+const migrateUpSpy = jest.spyOn(queries, "migrateUp");
+migrateUpSpy.mockImplementation(async () => Promise.resolve());
+// migrateDown
+const migrateDownSpy = jest.spyOn(queries, "migrateDown");
+migrateDownSpy.mockImplementation(async () => Promise.resolve());
+
+// DB Connection spy
+const connectSpy = jest.spyOn(connection, "connect");
+connectSpy.mockImplementation(async (options, callback) => {
+  let client = dummyClient;
+  return await callback(client);
+});
 
 describe("DatabaseClient", () => {
-  let connectionOptions, migration, connectStub, isSetUpStub, setUpStub, completedTimestampsStub,
-    migrateUpStub, migrateDownStub, mockClient, client;
+  const connectionOptions = Object.freeze({ host: "hello" });
+  let client;
 
   beforeEach(() => {
-    connectionOptions = { host: "hello" };
-    migration = { sql: "--", timestamp: "19881005000000" };
-
-    isSetUpStub = sinon.stub().resolves(true);
-    setUpStub = sinon.stub().resolves();
-    completedTimestampsStub = sinon.stub().resolves([ "19881005000000" ]);
-    migrateUpStub = sinon.stub().resolves();
-    migrateDownStub = sinon.stub().resolves();
-    mockClient = { query: sinon.stub() };
-
-    connectStub = sinon.spy((options, callback) => callback(mockClient));
-
-    let DatabaseClient = proxyquire('../../lib/database/database-client', {
-      "./database-connect": {
-        connect: connectStub
-      },
-      "./database-queries": {
-        isSetUp: isSetUpStub,
-        setUp: setUpStub,
-        completedTimestamps: completedTimestampsStub,
-        migrateUp: migrateUpStub,
-        migrateDown: migrateDownStub
-      }
-    }).default;
-
     client = new DatabaseClient(connectionOptions);
+    jest.clearAllMocks();
   });
 
   describe("#isSetUp", () => {
 
     it("connects to the client", async () => {
       await client.isSetUp();
-      expect(connectStub).to.have.been.calledWith(connectionOptions, sinon.match.func);
+      expect(connectSpy).toHaveBeenCalledWith(connectionOptions, queries.isSetUp);
     });
 
-    it("returns the result of isSetUp", async () => {
-      expect(await client.isSetUp()).to.eq(true);
+    it("the client invokes the isSetup callback query", async () => {
+      await client.isSetUp();
+      expect(isSetUpSpy).toHaveBeenCalledWith(dummyClient);
     });
   });
 
@@ -51,12 +59,12 @@ describe("DatabaseClient", () => {
 
     it("connects to the client", async () => {
       await client.setUp();
-      expect(connectStub).to.have.been.calledWith(connectionOptions, sinon.match.func);
+      expect(connectSpy).toHaveBeenCalledWith(connectionOptions, queries.setUp);
     });
 
     it("calls the setUp query", async () => {
       await client.setUp();
-      expect(connectStub).to.have.been.calledWith(connectionOptions, sinon.match.func);
+      expect(setUpSpy).toHaveBeenCalledWith(dummyClient);
     });
   });
 
@@ -64,11 +72,11 @@ describe("DatabaseClient", () => {
 
     it("connects to the client", async () => {
       await client.completedTimestamps();
-      expect(connectStub).to.have.been.calledWith(connectionOptions, sinon.match.func);
+      expect(connectSpy).toHaveBeenCalledWith(connectionOptions, queries.completedTimestamps);
     });
 
     it("returns the result of completedTimestamps", async () => {
-      expect(await client.completedTimestamps()).to.eql([ '19881005000000' ]);
+      expect(await client.completedTimestamps()).toEqual([ '19881005000000' ]);
     });
   });
 
@@ -76,12 +84,12 @@ describe("DatabaseClient", () => {
 
     it("connects to the client", async () => {
       await client.migrateUp(migration);
-      expect(connectStub).to.have.been.calledWith(connectionOptions, sinon.match.func);
+      expect(connectSpy).toHaveBeenCalled();
     });
 
     it("calls the migrateUp query", async () => {
       await client.migrateUp(migration);
-      expect(migrateUpStub).to.have.been.calledWith(mockClient, migration);
+      expect(migrateUpSpy).toHaveBeenCalledWith(dummyClient, migration);
     });
   });
 
@@ -89,12 +97,12 @@ describe("DatabaseClient", () => {
 
     it("connects to the client", async () => {
       await client.migrateDown(migration);
-      expect(connectStub).to.have.been.calledWith(connectionOptions, sinon.match.func);
+      expect(connectSpy).toHaveBeenCalled();
     });
 
     it("calls the migrateDown query", async () => {
       await client.migrateDown(migration);
-      expect(migrateDownStub).to.have.been.calledWith(mockClient, migration);
+      expect(migrateDownSpy).toHaveBeenCalledWith(dummyClient, migration);
     });
   });
 });

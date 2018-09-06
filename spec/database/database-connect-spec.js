@@ -1,79 +1,75 @@
-import sinon from 'sinon';
-import { expect } from 'chai';
-import proxyquire from 'proxyquire';
+import { Client } from "pg";
+import { connect } from "../../lib/database/database-connect";
+import logger from "../../lib/utilities/logger";
+
+jest.mock("pg");
+
+const databaseOptions = Object.freeze({});
+
+const dummyCallback = jest.fn(() => "Hello!");
 
 describe("connect", () => {
-  let MockClient, mockClient, error, callbackStub, connect, databaseOptions;
 
   beforeEach(() => {
-
-    mockClient = {
-      connect: sinon.stub(),
-      query: sinon.stub(),
-      end: sinon.stub()
-    };
-
-    MockClient = sinon.stub().returns(mockClient);
-
-    callbackStub = sinon.stub().resolves("Hello!");
-
-    connect = proxyquire('../../lib/database/database-connect', {
-      pg: { Client: MockClient }
-    }).connect;
-
-    error = new Error();
-    databaseOptions = {};
+    jest.clearAllMocks();
   });
 
-  context("when the client fails to connect", () => {
-    beforeEach(() => mockClient.connect.rejects(error));
+  describe("when the client fails to connect", () => {
+    beforeEach(() => {
+      Client.prototype.connect.mockImplementationOnce(() => Promise.reject("Connect Failure"));
+    });
 
-    it("throws the error", () => {
-      return expect(connect(databaseOptions, callbackStub)).to.be.rejectedWith(error);
+    it("throws the error", async () => {
+      expect(connect(databaseOptions, logger.error)).rejects.toBe("Connect Failure");
     });
   });
 
-  context("when the callback throws an error", () => {
-    beforeEach(() => callbackStub.rejects(error));
+  describe("when the callback throws an error", () => {
 
-    it("throws the error", () => {
-      return expect(connect(databaseOptions, callbackStub)).to.be.rejectedWith(error);
+    it("throws the error", async () => {
+      expect(
+        connect(databaseOptions, () => { throw new Error("Callback Failure!"); }))
+        .rejects.toEqual(new Error("Callback Failure!"));
     });
   });
 
-  context("when the client fails to end", () => {
-    beforeEach(() => mockClient.end.rejects(error));
+  describe("when the client fails to end", () => {
+    beforeEach(() => {
+      Client.prototype.end.mockImplementationOnce(() => Promise.reject("End Failure"));
+    });
 
-    it("throws the error", () => {
-      return expect(connect(databaseOptions, callbackStub)).to.be.rejectedWith(error);
+    it("throws the error", async () => {
+      expect(connect(databaseOptions, dummyCallback)).rejects.toBe("End Failure");
     });
   });
 
-  context("when no errors are thrown", () => {
+  describe("when no errors are thrown", () => {
 
     it("passes the database options to the client", async () => {
-      await connect(databaseOptions, callbackStub);
-      expect(MockClient).to.have.been.calledWithNew;
+      await connect(databaseOptions, dummyCallback);
+      expect(Client).toHaveBeenCalledWith(databaseOptions);
     });
 
     it("calls connect", async () => {
-      await connect(databaseOptions, callbackStub);
-      expect(mockClient.connect).to.have.been.called;
+      await connect(databaseOptions, dummyCallback);
+      expect(Client.prototype.connect).toHaveBeenCalled;
     });
 
     it("calls the callback", async () => {
-      await connect(databaseOptions, callbackStub);
-      expect(callbackStub).to.have.been.calledAfter(mockClient.connect);
+      await connect(databaseOptions, dummyCallback);
+      // Calling connect creates a client instance, which we can grab from mock.
+      expect(dummyCallback).toHaveBeenCalledWith(Client.mock.instances[0]);
+      expect(dummyCallback).toHaveBeenCalledAfter(Client.prototype.connect);
     });
 
     it("calls end", async () => {
-      await connect(databaseOptions, callbackStub);
-      expect(mockClient.end).to.have.been.calledAfter(callbackStub);
+      await connect(databaseOptions, dummyCallback);
+      expect(Client.prototype.end).toHaveBeenCalledAfter(dummyCallback);
     });
 
     it("returns the result of the callback", async () => {
-      let result = await connect(databaseOptions, callbackStub);
-      expect(result).to.eq("Hello!");
+      let result = await connect(databaseOptions, dummyCallback);
+      expect(result).toBe("Hello!");
     });
   });
 });
