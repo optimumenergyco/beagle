@@ -2,6 +2,9 @@ import chalk from 'chalk';
 
 import logger from '../../lib/utilities/logger';
 
+// Logger mocked ( suppressed by default ), so we unmock for testing.
+jest.unmock('../../lib/utilities/logger');
+
 // To avoid interfering with Mocha's formatter, stubbing `process.stdout.write` much be done within
 // each test's `it` function, not in `beforeEach` and `afterEach` functions.
 function stubStdout(callback) {

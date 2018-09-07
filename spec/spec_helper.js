@@ -1,6 +1,9 @@
 // Add more matchers via Jest extended
 import 'jest-extended';
 
+// Suppress the logging.
+jest.mock('../lib/utilities/logger');
+
 expect.extend({
 
   toHaveBeenCalledWithMatch(received, ...parameters) {

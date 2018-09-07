@@ -4,9 +4,6 @@ import all from "../../lib/commands/all";
 
 jest.mock('../../lib/database/database-client');
 
-// Suppress the logging.
-jest.mock('../../lib/utilities/logger');
-
 // Mock migration files.
 jest.mock('../../lib/migrations/migration-files');
 

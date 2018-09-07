@@ -4,9 +4,6 @@ import up from "../../lib/commands/up";
 
 jest.mock('../../lib/database/database-client');
 
-// Suppress the logging.
-jest.mock('../../lib/utilities/logger');
-
 // Mock migration files.
 jest.mock('../../lib/migrations/migration-files');
 
@@ -26,7 +23,7 @@ describe("up", () => {
 
     migrationsDirectory = "/tmp/migrations";
 
-    readMigrationFiles.mockReturnValue([ migration ]);
+    readMigrationFiles.mockReturnValue([migration]);
   });
 
   it("creates a new client", async () => {
@@ -68,7 +65,7 @@ describe("up", () => {
 
   describe("when there is not a pending migration", () => {
     beforeEach(() => {
-      DatabaseClient.prototype.completedTimestamps.mockReturnValue([ '17760704000000' ]);
+      DatabaseClient.prototype.completedTimestamps.mockReturnValue(['17760704000000']);
     });
 
     it("does not run a migration", async () => {

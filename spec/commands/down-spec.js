@@ -4,9 +4,6 @@ import down from "../../lib/commands/down";
 
 jest.mock('../../lib/database/database-client');
 
-// Suppress the logging.
-jest.mock('../../lib/utilities/logger');
-
 // Mock migration files.
 jest.mock('../../lib/migrations/migration-files');
 
@@ -26,7 +23,7 @@ describe("down", () => {
 
     migrationsDirectory = "/tmp/migrations";
 
-    readMigrationFiles.mockReturnValue([migration]);
+    readMigrationFiles.mockReturnValue([ migration ]);
   });
 
   it("creates a new client", async () => {
@@ -50,7 +47,7 @@ describe("down", () => {
 
   describe("when there is a completed migration", () => {
     beforeEach(() => {
-      DatabaseClient.prototype.completedTimestamps.mockReturnValue(['17760704000000']);
+      DatabaseClient.prototype.completedTimestamps.mockReturnValue([ '17760704000000' ]);
     });
 
     it("runs the pending migration", async () => {
