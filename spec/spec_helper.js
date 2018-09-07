@@ -1,5 +1,5 @@
 // Add more matchers via Jest extended
-require('jest-extended');
+import 'jest-extended';
 
 expect.extend({
 
