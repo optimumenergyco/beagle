@@ -52,7 +52,7 @@ describe("connect", () => {
 
     it("calls connect", async () => {
       await connect(databaseOptions, dummyCallback);
-      expect(Client.prototype.connect).toHaveBeenCalled;
+      expect(Client.prototype.connect).toHaveBeenCalled();
     });
 
     it("calls the callback", async () => {

@@ -31,7 +31,7 @@ describe("up", () => {
 
   it("creates a new client", async () => {
     await up(databaseOptions, migrationsDirectory);
-    expect(DatabaseClient).toHaveBeenCalled;
+    expect(DatabaseClient).toHaveBeenCalled();
   });
 
   describe("when the database is not set up", () => {

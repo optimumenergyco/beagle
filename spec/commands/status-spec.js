@@ -34,16 +34,21 @@ describe("status", () => {
 
     it("fetches the completed timestamps", async () => {
       await status(databaseOptions, migrationsDirectory);
-      expect(DatabaseClient.prototype.completedTimestamps).toHaveBeenCalled;
+      expect(DatabaseClient.prototype.completedTimestamps).toHaveBeenCalled();
     });
   });
 
   describe("when the database is not set up", () => {
     beforeEach(() => DatabaseClient.prototype.isSetUp.mockReturnValue(false));
 
-    it("does not fetch the completed timestamps", async () => {
+    it("sets up the database", async () => {
       await status(databaseOptions, migrationsDirectory);
-      expect(DatabaseClient.prototype.completedTimestamps).not.toHaveBeenCalled;
+      expect(DatabaseClient.prototype.setUp).toHaveBeenCalled();
+    });
+
+    it("fetches the completed timestamps", async () => {
+      await status(databaseOptions, migrationsDirectory);
+      expect(DatabaseClient.prototype.completedTimestamps).toHaveBeenCalled();
     });
   });
 });

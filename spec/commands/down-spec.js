@@ -26,12 +26,12 @@ describe("down", () => {
 
     migrationsDirectory = "/tmp/migrations";
 
-    readMigrationFiles.mockReturnValue([ migration ]);
+    readMigrationFiles.mockReturnValue([migration]);
   });
 
   it("creates a new client", async () => {
     await down(databaseOptions, migrationsDirectory);
-    expect(DatabaseClient).toHaveBeenCalled;
+    expect(DatabaseClient).toHaveBeenCalled();
   });
 
   describe("when the database is not set up", () => {
@@ -50,7 +50,7 @@ describe("down", () => {
 
   describe("when there is a completed migration", () => {
     beforeEach(() => {
-      DatabaseClient.prototype.completedTimestamps.mockReturnValue([ '17760704000000' ]);
+      DatabaseClient.prototype.completedTimestamps.mockReturnValue(['17760704000000']);
     });
 
     it("runs the pending migration", async () => {
