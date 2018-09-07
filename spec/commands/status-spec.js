@@ -1,22 +1,16 @@
-import proxyquire from 'proxyquire';
-import sinon from 'sinon';
-import { expect } from 'chai';
+import DatabaseClient from '../../lib/database/database-client';
+import { readMigrationFiles } from '../../lib/migrations/migration-files';
+import status from "../../lib/commands/status";
 
-import createMockDatabaseClient from '../helpers/create-mock-database-client.js';
-import createMockLogger from '../helpers/create-mock-logger';
+jest.mock('../../lib/database/database-client');
+
+// Mock migration files.
+jest.mock('../../lib/migrations/migration-files');
 
 describe("status", () => {
-  let status, MockDatabaseClient, readMigrationFilesStub, migrationsDirectory, databaseOptions;
+  let migrationsDirectory, databaseOptions;
 
   beforeEach(() => {
-    readMigrationFilesStub = sinon.stub();
-    MockDatabaseClient = createMockDatabaseClient();
-
-    status = proxyquire('../../lib/commands/status', {
-      '../database/database-client': { default: MockDatabaseClient },
-      '../migrations/migration-files': { readMigrationFiles: readMigrationFilesStub },
-      '../utilities/logger': { default: createMockLogger() }
-    }).default;
 
     databaseOptions = {};
     migrationsDirectory = "/tmp/migrations";
@@ -24,29 +18,34 @@ describe("status", () => {
 
   it("creates a new client", async () => {
     await status(databaseOptions, migrationsDirectory);
-    expect(MockDatabaseClient).to.have.been.calledWithNew;
+    expect(DatabaseClient).toHaveBeenCalled();
   });
 
   it("reads the migration files", async () => {
     await status(databaseOptions, migrationsDirectory);
-    expect(readMigrationFilesStub).to.have.been.calledWith(migrationsDirectory);
+    expect(readMigrationFiles).toHaveBeenCalledWith(migrationsDirectory);
   });
 
-  context("when the database is set up", () => {
-    beforeEach(() => MockDatabaseClient.mockDatabaseClient.isSetUp.resolves(true));
+  describe("when the database is set up", () => {
+    beforeEach(() => DatabaseClient.prototype.isSetUp.mockReturnValue(true));
 
     it("fetches the completed timestamps", async () => {
       await status(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.completedTimestamps).to.have.been.called;
+      expect(DatabaseClient.prototype.completedTimestamps).toHaveBeenCalled();
     });
   });
 
-  context("when the database is not set up", () => {
-    beforeEach(() => MockDatabaseClient.mockDatabaseClient.isSetUp.resolves(false));
+  describe("when the database is not set up", () => {
+    beforeEach(() => DatabaseClient.prototype.isSetUp.mockReturnValue(false));
 
-    it("does not fetch the completed timestamps", async () => {
+    it("sets up the database", async () => {
       await status(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.completedTimestamps).not.to.have.been.called;
+      expect(DatabaseClient.prototype.setUp).toHaveBeenCalled();
+    });
+
+    it("fetches the completed timestamps", async () => {
+      await status(databaseOptions, migrationsDirectory);
+      expect(DatabaseClient.prototype.completedTimestamps).toHaveBeenCalled();
     });
   });
 });

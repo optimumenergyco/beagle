@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { expect } from 'chai';
 
 import {
   touch,
@@ -19,20 +18,20 @@ describe("touch", () => {
   beforeEach(() => path = `/tmp/${ timestamp }-beagle`);
   afterEach(() => fs.unlinkSync(path));
 
-  context("when the file does not exist", () => {
+  describe("when the file does not exist", () => {
 
     it("creates an empty file", async () => {
       await touch(path);
-      expect(fs.readFileSync(path, 'utf8')).to.eql('');
+      expect(fs.readFileSync(path, 'utf8')).toEqual('');
     });
   });
 
-  context("when the file exists", () => {
+  describe("when the file exists", () => {
     beforeEach(() => fs.writeFileSync(path, 'hello'));
 
     it("doesn not modify the file", async () => {
       await touch(path);
-      expect(fs.readFileSync(path, 'utf8')).to.eql('hello');
+      expect(fs.readFileSync(path, 'utf8')).toEqual('hello');
     });
   });
 });
@@ -58,7 +57,7 @@ describe("touchp", () => {
 
   it("creates the file", async () => {
     await touchp(path);
-    expect(fs.readFileSync(path, 'utf8')).to.eq('');
+    expect(fs.readFileSync(path, 'utf8')).toEqual('');
   });
 });
 
@@ -79,29 +78,28 @@ describe("glob", () => {
 
   it("lists the paths of the files matching the pattern", async () => {
     let paths = await glob(`/tmp/${ timestamp }-beagle/h*.txt`);
-    expect(paths).to.have.members([
-      `/tmp/${ timestamp }-beagle/hello.txt`,
-      `/tmp/${ timestamp }-beagle/hola.txt`
-    ]);
+    expect(paths.length).toBe(2);
+    expect(paths).toContain(`/tmp/${ timestamp }-beagle/hello.txt`);
+    expect(paths).toContain(`/tmp/${ timestamp }-beagle/hola.txt`);
   });
 });
 
 describe("readFile", () => {
   beforeEach(() => path = `/tmp/${ timestamp }-beagle`);
 
-  context("when the file exists", () => {
+  describe("when the file exists", () => {
     beforeEach(() => fs.writeFileSync(path, 'hello'));
     afterEach(() => fs.unlinkSync(path));
 
     it("returns the contents of the file", async () => {
-      expect(await readFile(path)).to.eq('hello');
+      expect(await readFile(path)).toEqual('hello');
     });
   });
 
-  context("when the file does not exist", () => {
+  describe("when the file does not exist", () => {
 
     it("throws an error", () => {
-      return expect(readFile(path)).to.be.rejectedWith(Error);
+      return expect(readFile(path)).rejects.toThrowError();
     });
   });
 });

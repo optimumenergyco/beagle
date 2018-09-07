@@ -1,26 +1,21 @@
-import proxyquire from 'proxyquire';
-import sinon from 'sinon';
-import { expect } from 'chai';
+import { createMigrationFile } from '../../lib/migrations/migration-files';
+import generate from "../../lib/commands/generate";
 
-import createMockLogger from '../helpers/create-mock-logger';
+jest.mock('../../lib/database/database-client');
+
+// Mock migration files.
+jest.mock('../../lib/migrations/migration-files');
 
 describe("generate", () => {
-  let generate, createMigrationFileStub, migrationsDirectory;
+  let migrationsDirectory;
 
   beforeEach(() => {
-    createMigrationFileStub = sinon.stub();
-
-    generate = proxyquire('../../lib/commands/generate', {
-      '../migrations/migration-files': { createMigrationFile: createMigrationFileStub },
-      '../utilities/logger': { default: createMockLogger() }
-    }).default;
-
     migrationsDirectory = "/tmp/migrations";
   });
 
   it("creates the up file", async () => {
     await generate(migrationsDirectory, 'hello');
-    expect(createMigrationFileStub).to.have.been.calledWith(
+    expect(createMigrationFile).toHaveBeenCalledWith(
       migrationsDirectory,
       'hello',
       'up'
@@ -29,7 +24,7 @@ describe("generate", () => {
 
   it("creates the down file", async () => {
     await generate(migrationsDirectory, 'hello');
-    expect(createMigrationFileStub).to.have.been.calledWith(
+    expect(createMigrationFile).toHaveBeenCalledWith(
       migrationsDirectory,
       'hello',
       'up'

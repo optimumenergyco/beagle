@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { expect } from 'chai';
 
 import ApplicationError from '../../lib/utilities/application-error';
 
@@ -13,7 +12,7 @@ import {
 describe("migrationPath", () => {
 
   it('returns the migration path', () => {
-    expect(migrationPath("/tmp", "hello", "up")).to.match(/^\/tmp\/\d{14}-hello-up\.sql$/);
+    expect(migrationPath("/tmp", "hello", "up")).toMatch(/^\/tmp\/\d{14}-hello-up\.sql$/);
   });
 });
 
@@ -28,46 +27,46 @@ describe("createMigrationFile", () => {
 describe("readMigrationFile", () => {
   let path;
 
-  context("when the migration path does not have a timestamp", () => {
+  describe("when the migration path does not have a timestamp", () => {
     beforeEach(() => path = "/tmp/hello.sql");
 
     it("throws an application error", () => {
-      return expect(readMigrationFile(path)).to.be.rejectedWith(ApplicationError);
+      return expect(readMigrationFile(path)).rejects.toThrowError(ApplicationError);
     });
   });
 
-  context("when the migration path does not have a name", () => {
+  describe("when the migration path does not have a name", () => {
     beforeEach(() => path = "/tmp/19881005000000-down.sql");
 
     it("throws aa application error", () => {
-      return expect(readMigrationFile(path)).to.be.rejectedWith(ApplicationError);
+      return expect(readMigrationFile(path)).rejects.toThrowError(ApplicationError);
     });
   });
 
-  context("when the migration path does not have a direction", () => {
+  describe("when the migration path does not have a direction", () => {
     beforeEach(() => path = "/tmp/19881005000000-hello.sql");
 
     it("throws an application error", () => {
-      return expect(readMigrationFile(path)).to.be.rejectedWith(ApplicationError);
+      return expect(readMigrationFile(path)).rejects.toThrowError(ApplicationError);
     });
   });
 
-  context("when the migration path does not have an SQL extension", () => {
+  describe("when the migration path does not have an SQL extension", () => {
     beforeEach(() => path = "/tmp/19881005000000-hello-down");
 
     it("throws an application error", () => {
-      return expect(readMigrationFile(path)).to.be.rejectedWith(ApplicationError);
+      return expect(readMigrationFile(path)).rejects.toThrowError(ApplicationError);
     });
   });
 
-  context("when the file does not exist", () => {
+  describe("when the file does not exist", () => {
 
     it("throws an error", () => {
-      return expect(readMigrationFile(path)).to.be.rejectedWith(Error);
+      return expect(readMigrationFile(path)).rejects.toThrowError(Error);
     });
   });
 
-  context("when the file exists and the path is valid", () => {
+  describe("when the file exists and the path is valid", () => {
     let migration;
 
     beforeEach(async () => {
@@ -81,23 +80,23 @@ describe("readMigrationFile", () => {
     });
 
     it("returns an object with the migration's timestamp", () => {
-      expect(migration.timestamp).to.eq("19881005000000");
+      expect(migration.timestamp).toBe("19881005000000");
     });
 
     it("returns an object with the migration's name", () => {
-      expect(migration.name).to.eq("hello");
+      expect(migration.name).toBe("hello");
     });
 
     it("returns an object with the migration's direction", () => {
-      expect(migration.direction).to.eq("up");
+      expect(migration.direction).toBe("up");
     });
 
     it("returns an object with the migration's basename", () => {
-      expect(migration.basename).to.eq("19881005000000-hello-up.sql");
+      expect(migration.basename).toBe("19881005000000-hello-up.sql");
     });
 
     it("returns an object with the migration's sql", () => {
-      expect(migration.sql).to.eq("-- SQL");
+      expect(migration.sql).toBe("-- SQL");
     });
   });
 });
@@ -122,9 +121,9 @@ describe("readMigrationFiles", () => {
   it("reads the migration files", async () => {
     let migrations = await readMigrationFiles(migrationsDirectory);
 
-    expect(migrations.map(migration => migration.basename)).to.have.members([
-      '19881005000000-hello-up.sql',
-      '19881005000000-hello-down.sql'
+    expect(migrations.map(migration => migration.basename)).toMatchObject([
+      '19881005000000-hello-down.sql',
+      '19881005000000-hello-up.sql'
     ]);
   });
 });

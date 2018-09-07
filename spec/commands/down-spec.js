@@ -1,23 +1,17 @@
-import proxyquire from 'proxyquire';
-import sinon from 'sinon';
-import { expect } from 'chai';
+import DatabaseClient from '../../lib/database/database-client';
+import { readMigrationFiles } from '../../lib/migrations/migration-files';
+import down from "../../lib/commands/down";
 
-import createMockDatabaseClient from '../helpers/create-mock-database-client.js';
-import createMockLogger from '../helpers/create-mock-logger';
+jest.mock('../../lib/database/database-client');
+
+// Mock migration files.
+jest.mock('../../lib/migrations/migration-files');
 
 describe("down", () => {
-  let down, MockDatabaseClient, readMigrationFilesStub, migrationsDirectory, databaseOptions,
-    migration;
+  let databaseOptions, migrationsDirectory, migration;
 
   beforeEach(() => {
-    readMigrationFilesStub = sinon.stub();
-    MockDatabaseClient = createMockDatabaseClient();
-
-    down = proxyquire('../../lib/commands/down', {
-      '../database/database-client': { default: MockDatabaseClient },
-      '../migrations/migration-files': { readMigrationFiles: readMigrationFilesStub },
-      '../utilities/logger': { default: createMockLogger() }
-    }).default;
+    jest.resetAllMocks();
 
     migration = {
       direction: 'down',
@@ -25,58 +19,49 @@ describe("down", () => {
       timestamp: '17760704000000'
     };
 
-    readMigrationFilesStub.resolves([ migration ]);
-
     databaseOptions = {};
+
     migrationsDirectory = "/tmp/migrations";
+
+    readMigrationFiles.mockReturnValue([ migration ]);
   });
 
   it("creates a new client", async () => {
     await down(databaseOptions, migrationsDirectory);
-    expect(MockDatabaseClient).to.have.been.calledWithNew;
+    expect(DatabaseClient).toHaveBeenCalled();
   });
 
-  context("when the database is not set up", () => {
-    beforeEach(() => MockDatabaseClient.mockDatabaseClient.isSetUp.resolves(false));
-
-    it("does not fetch the completed timestamps", async () => {
-      await down(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.completedTimestamps).to.not.have.been.called;
-    });
-
-    it("does not read the migration files", async () => {
-      await down(databaseOptions, migrationsDirectory);
-      expect(readMigrationFilesStub).to.not.have.been.called;
-    });
+  describe("when the database is not set up", () => {
+    beforeEach(() => DatabaseClient.prototype.isSetUp.mockReturnValue(false));
 
     it("does not roll back a migration", async () => {
       await down(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.migrateDown).to.not.have.been.called;
+      expect(DatabaseClient.prototype.migrateDown).not.toHaveBeenCalled();
     });
   });
 
   it("reads the migration files", async () => {
     await down(databaseOptions, migrationsDirectory);
-    expect(readMigrationFilesStub).to.have.been.calledWith(migrationsDirectory);
+    expect(readMigrationFiles).toHaveBeenCalledWith(migrationsDirectory);
   });
 
-  context("when there is a completed migration", () => {
+  describe("when there is a completed migration", () => {
     beforeEach(() => {
-      MockDatabaseClient.mockDatabaseClient.completedTimestamps.resolves([ '17760704000000' ]);
+      DatabaseClient.prototype.completedTimestamps.mockReturnValue([ '17760704000000' ]);
     });
 
     it("runs the pending migration", async () => {
       await down(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.migrateDown).to.have.been.calledWith(migration);
+      expect(DatabaseClient.prototype.migrateDown).toHaveBeenCalledWith(migration);
     });
   });
 
-  context("when there is not a completed migration", () => {
-    beforeEach(() => MockDatabaseClient.mockDatabaseClient.completedTimestamps.resolves([]));
+  describe("when there is not a completed migration", () => {
+    beforeEach(() => DatabaseClient.prototype.completedTimestamps.mockReturnValue([]));
 
     it("does not run a migration", async () => {
       await down(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.migrateDown).to.not.have.been.called;
+      expect(DatabaseClient.prototype.migrateDown).not.toHaveBeenCalled();
     });
   });
 });

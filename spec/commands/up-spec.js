@@ -1,23 +1,17 @@
-import proxyquire from 'proxyquire';
-import sinon from 'sinon';
-import { expect } from 'chai';
+import DatabaseClient from '../../lib/database/database-client';
+import { readMigrationFiles } from '../../lib/migrations/migration-files';
+import up from "../../lib/commands/up";
 
-import createMockDatabaseClient from '../helpers/create-mock-database-client.js';
-import createMockLogger from '../helpers/create-mock-logger';
+jest.mock('../../lib/database/database-client');
+
+// Mock migration files.
+jest.mock('../../lib/migrations/migration-files');
 
 describe("up", () => {
-  let up, MockDatabaseClient, readMigrationFilesStub, migrationsDirectory, databaseOptions,
-    migration;
+  let databaseOptions, migration, migrationsDirectory;
 
   beforeEach(() => {
-    readMigrationFilesStub = sinon.stub();
-    MockDatabaseClient = createMockDatabaseClient();
-
-    up = proxyquire('../../lib/commands/up', {
-      '../database/database-client': { default: MockDatabaseClient },
-      '../migrations/migration-files': { readMigrationFiles: readMigrationFilesStub },
-      '../utilities/logger': { default: createMockLogger() }
-    }).default;
+    jest.resetAllMocks();
 
     migration = {
       direction: 'up',
@@ -25,57 +19,58 @@ describe("up", () => {
       timestamp: '17760704000000'
     };
 
-    readMigrationFilesStub.resolves([ migration ]);
-
     databaseOptions = {};
+
     migrationsDirectory = "/tmp/migrations";
+
+    readMigrationFiles.mockReturnValue([migration]);
   });
 
   it("creates a new client", async () => {
     await up(databaseOptions, migrationsDirectory);
-    expect(MockDatabaseClient).to.have.been.calledWithNew;
+    expect(DatabaseClient).toHaveBeenCalled();
   });
 
-  context("when the database is not set up", () => {
-    beforeEach(() => MockDatabaseClient.mockDatabaseClient.isSetUp.resolves(false));
+  describe("when the database is not set up", () => {
+    beforeEach(() => DatabaseClient.prototype.isSetUp.mockReturnValue(false));
 
     it("sets up the database", async () => {
       await up(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.setUp).to.have.been.called;
+      expect(DatabaseClient.prototype.setUp).toHaveBeenCalled();
     });
   });
 
-  context("when the database is set up", () => {
-    beforeEach(() => MockDatabaseClient.mockDatabaseClient.isSetUp.resolves(true));
+  describe("when the database is set up", () => {
+    beforeEach(() => DatabaseClient.prototype.isSetUp.mockReturnValue(true));
 
     it("does not set up the database", async () => {
       await up(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.setUp).to.not.have.been.called;
+      expect(DatabaseClient.prototype.setUp).not.toHaveBeenCalled();
     });
   });
 
   it("reads the migration files", async () => {
     await up(databaseOptions, migrationsDirectory);
-    expect(readMigrationFilesStub).to.have.been.calledWith(migrationsDirectory);
+    expect(readMigrationFiles).toHaveBeenCalledWith(migrationsDirectory);
   });
 
-  context("when there is a pending migration", () => {
-    beforeEach(() => MockDatabaseClient.mockDatabaseClient.completedTimestamps.resolves([]));
+  describe("when there is a pending migration", () => {
+    beforeEach(() => DatabaseClient.prototype.completedTimestamps.mockReturnValue([]));
 
     it("runs the pending migration", async () => {
       await up(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.migrateUp).to.have.been.calledWith(migration);
+      expect(DatabaseClient.prototype.migrateUp).toHaveBeenCalledWith(migration);
     });
   });
 
-  context("when there is not a pending migration", () => {
+  describe("when there is not a pending migration", () => {
     beforeEach(() => {
-      MockDatabaseClient.mockDatabaseClient.completedTimestamps.resolves([ '17760704000000' ]);
+      DatabaseClient.prototype.completedTimestamps.mockReturnValue(['17760704000000']);
     });
 
     it("does not run a migration", async () => {
       await up(databaseOptions, migrationsDirectory);
-      expect(MockDatabaseClient.mockDatabaseClient.migrateUp).to.not.have.been.called;
+      expect(DatabaseClient.prototype.migrateUp).not.toHaveBeenCalled();
     });
   });
 });
