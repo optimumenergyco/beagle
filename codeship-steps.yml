@@ -9,3 +9,8 @@
       name: Test
       service: beagle
       command: yarn test
+-
+  name: deploy-to-npm
+  service: beagle
+  command: bin/publish
+  tag: master
