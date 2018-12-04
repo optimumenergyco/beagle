@@ -2,7 +2,8 @@ module.exports = {
   extends: "optimum-energy",
   env: {
     node: true,
-    jest: true
+    jest: true,
+    es6: true
   },
   parser: "babel-eslint",
   parserOptions: {
