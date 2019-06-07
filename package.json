@@ -19,7 +19,7 @@
     "lodash": "^4.17.11",
     "mkdirp": "^0.5.1",
     "pg": "^7.7.1",
-    "yargs": "^12.0.5"
+    "yargs": "^13.2.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
@@ -30,10 +30,10 @@
     "@babel/register": "^7.0.0-beta.49",
     "babel-core": "^7.0.0-0",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.8.0",
     "eslint": "^5.9.0",
-    "eslint-config-optimum-energy": "^0.4.0",
-    "jest": "^23.6.0",
+    "eslint-config-optimum-energy": "^0.5.0",
+    "jest": "^24.8.0",
     "jest-extended": "^0.11.0",
     "source-map-support": "^0.5.9"
   },
