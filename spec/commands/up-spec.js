@@ -1,11 +1,11 @@
-import DatabaseClient from '../../lib/database/database-client';
-import { readMigrationFiles } from '../../lib/migrations/migration-files';
+import DatabaseClient from "../../lib/database/database-client";
+import { readMigrationFiles } from "../../lib/migrations/migration-files";
 import up from "../../lib/commands/up";
 
-jest.mock('../../lib/database/database-client');
+jest.mock("../../lib/database/database-client");
 
 // Mock migration files.
-jest.mock('../../lib/migrations/migration-files');
+jest.mock("../../lib/migrations/migration-files");
 
 describe("up", () => {
   let databaseOptions, migration, migrationsDirectory;
@@ -14,9 +14,9 @@ describe("up", () => {
     jest.resetAllMocks();
 
     migration = {
-      direction: 'up',
-      basename: '17760704000000-hello.sql',
-      timestamp: '17760704000000'
+      direction: "up",
+      basename: "17760704000000-hello.sql",
+      timestamp: "17760704000000"
     };
 
     databaseOptions = {};
@@ -65,7 +65,7 @@ describe("up", () => {
 
   describe("when there is not a pending migration", () => {
     beforeEach(() => {
-      DatabaseClient.prototype.completedTimestamps.mockReturnValue([ '17760704000000' ]);
+      DatabaseClient.prototype.completedTimestamps.mockReturnValue([ "17760704000000" ]);
     });
 
     it("does not run a migration", async () => {

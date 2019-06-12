@@ -1,11 +1,11 @@
-import DatabaseClient from '../../lib/database/database-client';
-import { readMigrationFiles } from '../../lib/migrations/migration-files';
+import DatabaseClient from "../../lib/database/database-client";
+import { readMigrationFiles } from "../../lib/migrations/migration-files";
 import status from "../../lib/commands/status";
 
-jest.mock('../../lib/database/database-client');
+jest.mock("../../lib/database/database-client");
 
 // Mock migration files.
-jest.mock('../../lib/migrations/migration-files');
+jest.mock("../../lib/migrations/migration-files");
 
 describe("status", () => {
   let migrationsDirectory, databaseOptions;

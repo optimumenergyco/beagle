@@ -1,4 +1,4 @@
-import ApplicationError from '../../lib/utilities/application-error';
+import ApplicationError from "../../lib/utilities/application-error";
 
 describe("ApplicationError", () => {
   let error;

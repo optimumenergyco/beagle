@@ -9,7 +9,7 @@ module.exports = {
   coveragePathIgnorePatterns: [
     "/node_modules/"
   ],
-  setupTestFrameworkScriptFile: "./spec/spec_helper",
+  setupFilesAfterEnv: [ "./spec/spec_helper" ],
   unmockedModulePathPatterns: [
     "lodash"
   ]
