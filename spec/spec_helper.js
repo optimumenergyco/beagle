@@ -1,8 +1,8 @@
 // Add more matchers via Jest extended
-import 'jest-extended';
+import "jest-extended";
 
 // Suppress the logging.
-jest.mock('../lib/utilities/logger');
+jest.mock("../lib/utilities/logger");
 
 expect.extend({
 
@@ -17,8 +17,8 @@ expect.extend({
       return {
         pass: false,
         message: () => {
-          let matcherHint = this.utils.matcherHint('.toHaveBeenCalledWithMatch');
-          return `${ matcherHint }\n${ error.message.replace(/^.*?\n/m, '') }`;
+          let matcherHint = this.utils.matcherHint(".toHaveBeenCalledWithMatch");
+          return `${ matcherHint }\n${ error.message.replace(/^.*?\n/m, "") }`;
         }
       };
     }
@@ -35,7 +35,7 @@ expect.extend({
           .join("\n");
 
         return [
-          this.utils.matcherHint('.not.toHaveBeenCalledWithMatch'),
+          this.utils.matcherHint(".not.toHaveBeenCalledWithMatch"),
           "\n",
           `Expected mock to not have been called with parameters:\n${ formattedExpected }\n`,
           `Received:\n${ formattedReceived }`

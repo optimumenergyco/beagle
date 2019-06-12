@@ -3,16 +3,16 @@ import {
   completedMigrations,
   nextPendingMigration,
   lastCompletedMigration
-} from '../../lib/migrations/migration-filters';
+} from "../../lib/migrations/migration-filters";
 
 let migrations, timestamps;
 
 beforeEach(() => {
   migrations = [
-    { direction: 'up', timestamp: '20181005000000' },
-    { direction: 'up', timestamp: '19881005000000' },
-    { direction: 'down', timestamp: '20181005000000' },
-    { direction: 'down', timestamp: '19881005000000' }
+    { direction: "up", timestamp: "20181005000000" },
+    { direction: "up", timestamp: "19881005000000" },
+    { direction: "down", timestamp: "20181005000000" },
+    { direction: "down", timestamp: "19881005000000" }
   ];
 
   timestamps = [

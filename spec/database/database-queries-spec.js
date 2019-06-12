@@ -4,7 +4,7 @@ import {
   completedTimestamps,
   migrateUp,
   migrateDown
-} from '../../lib/database/database-queries';
+} from "../../lib/database/database-queries";
 
 const sql = "-- Hello";
 const timestamp = "19881005000000";
@@ -55,7 +55,7 @@ describe("completedTimestamps", () => {
     mockClient.query.mockReturnValue({
       rows: [
         { timestamp },
-        { timestamp: '20181005000000' }
+        { timestamp: "20181005000000" }
       ]
     });
   });
@@ -67,7 +67,7 @@ describe("completedTimestamps", () => {
 
   it("returns the completed timestamps", async () => {
     let timestamps = await completedTimestamps(mockClient);
-    expect(timestamps).toEqual([ timestamp, '20181005000000' ]);
+    expect(timestamps).toEqual([ timestamp, "20181005000000" ]);
   });
 });
 

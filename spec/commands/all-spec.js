@@ -1,11 +1,11 @@
-import DatabaseClient from '../../lib/database/database-client';
-import { readMigrationFiles } from '../../lib/migrations/migration-files';
+import DatabaseClient from "../../lib/database/database-client";
+import { readMigrationFiles } from "../../lib/migrations/migration-files";
 import all from "../../lib/commands/all";
 
-jest.mock('../../lib/database/database-client');
+jest.mock("../../lib/database/database-client");
 
 // Mock migration files.
-jest.mock('../../lib/migrations/migration-files');
+jest.mock("../../lib/migrations/migration-files");
 
 describe("all", () => {
   let databaseOptions, migrationsDirectory, migrations;
@@ -15,14 +15,14 @@ describe("all", () => {
 
     migrations = [
       {
-        direction: 'up',
-        basename: '19880715000000-die-hard.sql',
-        timestamp: '19880715000000'
+        direction: "up",
+        basename: "19880715000000-die-hard.sql",
+        timestamp: "19880715000000"
       },
       {
-        direction: 'up',
-        basename: '19900629000000-die-hard-2.sql',
-        timestamp: '19900629000000'
+        direction: "up",
+        basename: "19900629000000-die-hard-2.sql",
+        timestamp: "19900629000000"
       }
     ];
 
@@ -75,8 +75,8 @@ describe("all", () => {
   describe("when there is not a pending migration", () => {
     beforeEach(() => {
       DatabaseClient.prototype.completedTimestamps.mockReturnValue([
-        '19880715000000',
-        '19900629000000'
+        "19880715000000",
+        "19900629000000"
       ]);
     });
 
