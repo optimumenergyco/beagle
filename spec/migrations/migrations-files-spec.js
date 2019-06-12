@@ -1,17 +1,17 @@
-import fs from 'fs';
+import fs from "fs";
 
-import ApplicationError from '../../lib/utilities/application-error';
+import ApplicationError from "../../lib/utilities/application-error";
 
 import {
   migrationPath,
   createMigrationFile,
   readMigrationFile,
   readMigrationFiles
-} from '../../lib/migrations/migration-files';
+} from "../../lib/migrations/migration-files";
 
 describe("migrationPath", () => {
 
-  it('returns the migration path', () => {
+  it("returns the migration path", () => {
     expect(migrationPath("/tmp", "hello", "up")).toMatch(/^\/tmp\/\d{14}-hello-up\.sql$/);
   });
 });
@@ -105,7 +105,7 @@ describe("readMigrationFiles", () => {
   let migrationsDirectory;
 
   beforeEach(() => {
-    migrationsDirectory = `/tmp/${ new Date().toISOString().replace(/\D/g, '-') }beagle`;
+    migrationsDirectory = `/tmp/${ new Date().toISOString().replace(/\D/g, "-") }beagle`;
 
     fs.mkdirSync(migrationsDirectory);
     fs.writeFileSync(`${ migrationsDirectory }/19881005000000-hello-up.sql`, "-- Hello");
@@ -122,8 +122,8 @@ describe("readMigrationFiles", () => {
     let migrations = await readMigrationFiles(migrationsDirectory);
 
     expect(migrations.map(migration => migration.basename)).toMatchObject([
-      '19881005000000-hello-down.sql',
-      '19881005000000-hello-up.sql'
+      "19881005000000-hello-down.sql",
+      "19881005000000-hello-up.sql"
     ]);
   });
 });

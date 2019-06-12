@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from "fs";
 
 import {
   touch,
@@ -6,12 +6,12 @@ import {
   touchp,
   glob,
   readFile
-} from '../../lib/utilities/file-system';
+} from "../../lib/utilities/file-system";
 
 let path, timestamp;
 
 beforeEach(() => {
-  timestamp = new Date().toISOString().replace(/\D/g, '-');
+  timestamp = new Date().toISOString().replace(/\D/g, "-");
 });
 
 describe("touch", () => {
@@ -22,16 +22,16 @@ describe("touch", () => {
 
     it("creates an empty file", async () => {
       await touch(path);
-      expect(fs.readFileSync(path, 'utf8')).toEqual('');
+      expect(fs.readFileSync(path, "utf8")).toEqual("");
     });
   });
 
   describe("when the file exists", () => {
-    beforeEach(() => fs.writeFileSync(path, 'hello'));
+    beforeEach(() => fs.writeFileSync(path, "hello"));
 
     it("doesn not modify the file", async () => {
       await touch(path);
-      expect(fs.readFileSync(path, 'utf8')).toEqual('hello');
+      expect(fs.readFileSync(path, "utf8")).toEqual("hello");
     });
   });
 });
@@ -57,16 +57,16 @@ describe("touchp", () => {
 
   it("creates the file", async () => {
     await touchp(path);
-    expect(fs.readFileSync(path, 'utf8')).toEqual('');
+    expect(fs.readFileSync(path, "utf8")).toEqual("");
   });
 });
 
 describe("glob", () => {
   beforeEach(() => {
     fs.mkdirSync(`/tmp/${ timestamp }-beagle`);
-    fs.writeFileSync(`/tmp/${ timestamp }-beagle/hello.txt`, '');
-    fs.writeFileSync(`/tmp/${ timestamp }-beagle/hola.txt`, '');
-    fs.writeFileSync(`/tmp/${ timestamp }-beagle/bonjour.txt`, '');
+    fs.writeFileSync(`/tmp/${ timestamp }-beagle/hello.txt`, "");
+    fs.writeFileSync(`/tmp/${ timestamp }-beagle/hola.txt`, "");
+    fs.writeFileSync(`/tmp/${ timestamp }-beagle/bonjour.txt`, "");
   });
 
   afterEach(() => {
@@ -88,11 +88,11 @@ describe("readFile", () => {
   beforeEach(() => path = `/tmp/${ timestamp }-beagle`);
 
   describe("when the file exists", () => {
-    beforeEach(() => fs.writeFileSync(path, 'hello'));
+    beforeEach(() => fs.writeFileSync(path, "hello"));
     afterEach(() => fs.unlinkSync(path));
 
     it("returns the contents of the file", async () => {
-      expect(await readFile(path)).toEqual('hello');
+      expect(await readFile(path)).toEqual("hello");
     });
   });
 

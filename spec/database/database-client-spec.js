@@ -1,7 +1,7 @@
-import * as connection from '../../lib/database/database-connect';
-import * as queries from '../../lib/database/database-queries';
-import DatabaseClient from '../../lib/database/database-client';
-import * as logger from '../../lib/utilities/logger';
+import * as connection from "../../lib/database/database-connect";
+import * as queries from "../../lib/database/database-queries";
+import DatabaseClient from "../../lib/database/database-client";
+import * as logger from "../../lib/utilities/logger";
 
 const migration = Object.freeze({ sql: "--", timestamp: "19881005000000" });
 
@@ -76,7 +76,7 @@ describe("DatabaseClient", () => {
     });
 
     it("returns the result of completedTimestamps", async () => {
-      expect(await client.completedTimestamps()).toEqual([ '19881005000000' ]);
+      expect(await client.completedTimestamps()).toEqual([ "19881005000000" ]);
     });
   });
 
