@@ -1,6 +1,6 @@
 {
   "name": "@optimumenergyco/beagle",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "The friendly database migration tool",
   "main": "build/index.js",
   "repository": "https://github.com/optimumenergyco/beagle",
@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "engines": {
-    "node": ">= 10"
+    "node": ">= 12"
   },
   "files": [
     "build"
@@ -16,26 +16,26 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "glob": "^7.1.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "mkdirp": "^0.5.1",
-    "pg": "^7.7.1",
-    "yargs": "^13.2.4"
+    "pg": "^7.12.1",
+    "yargs": "^14.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.0",
-    "@babel/node": "^7.2.0",
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/node": "^7.6.2",
     "@babel/plugin-syntax-object-rest-spread": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
-    "@babel/register": "^7.0.0-beta.49",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/register": "^7.6.2",
     "babel-core": "^7.0.0-0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^24.8.0",
-    "eslint": "^5.9.0",
-    "eslint-config-optimum-energy": "^0.5.0",
-    "jest": "^24.8.0",
-    "jest-extended": "^0.11.0",
-    "source-map-support": "^0.5.9"
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.4.0",
+    "eslint-config-optimum-energy": "^0.6.3",
+    "jest": "^24.9.0",
+    "jest-extended": "^0.11.2",
+    "source-map-support": "^0.5.13"
   },
   "scripts": {
     "prepublish": "babel --out-dir build lib",

@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12
 
 # Install the application's dependencies
 ADD package.json yarn.lock /app/
