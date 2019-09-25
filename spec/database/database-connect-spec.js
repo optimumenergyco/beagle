@@ -28,7 +28,8 @@ describe("connect", () => {
 
     it("throws the error", async () => {
       expect(
-        connect(databaseOptions, () => { throw new Error("Callback Failure!"); }))
+        connect(databaseOptions, () => { throw new Error("Callback Failure!"); })
+      )
         .rejects.toEqual(new Error("Callback Failure!"));
     });
   });
